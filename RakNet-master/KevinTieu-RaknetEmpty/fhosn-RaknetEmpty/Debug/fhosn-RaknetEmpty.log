@@ -1,0 +1,14 @@
+﻿  player.cpp
+  main.cpp
+c:\users\kevin\desktop\raknet-master-master\fhosn-raknetempty\fhosn-raknetempty\main.cpp(147): warning C4018: '<': signed/unsigned mismatch
+c:\users\kevin\desktop\raknet-master-master\fhosn-raknetempty\fhosn-raknetempty\main.cpp(363): warning C4477: 'printf' : format string '%I64u' requires an argument of type 'unsigned __int64', but variadic argument 1 has type 'RakNet::RakNetGUID'
+c:\users\kevin\desktop\raknet-master-master\fhosn-raknetempty\fhosn-raknetempty\main.cpp(436): warning C4018: '<': signed/unsigned mismatch
+c:\users\kevin\desktop\raknet-master-master\fhosn-raknetempty\fhosn-raknetempty\main.cpp(548): warning C4018: '<': signed/unsigned mismatch
+c:\users\kevin\desktop\raknet-master-master\fhosn-raknetempty\fhosn-raknetempty\main.cpp(668): warning C4018: '>=': signed/unsigned mismatch
+c:\users\kevin\desktop\raknet-master-master\fhosn-raknetempty\fhosn-raknetempty\main.cpp(690): warning C4018: '<': signed/unsigned mismatch
+  Paladin.cpp
+  Beserker.cpp
+  Assassin.cpp
+  Generating Code...
+  fhosn-RaknetEmpty.vcxproj -> C:\Users\Kevin\Desktop\RakNet-master-master\fhosn-RaknetEmpty\Debug\fhosn-RaknetEmpty.exe
+  fhosn-RaknetEmpty.vcxproj -> C:\Users\Kevin\Desktop\RakNet-master-master\fhosn-RaknetEmpty\Debug\fhosn-RaknetEmpty.pdb (Partial PDB)
