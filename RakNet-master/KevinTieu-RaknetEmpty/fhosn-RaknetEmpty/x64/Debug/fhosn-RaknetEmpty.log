@@ -1,0 +1,1 @@
+﻿RakNet_VS2008_DLL_Debug_Win32.lib(RakNet_VS2008_DLL_Debug_Win32.dll) : fatal error LNK1112: module machine type 'x86' conflicts with target machine type 'x64'
