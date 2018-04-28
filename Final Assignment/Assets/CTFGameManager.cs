@@ -20,7 +20,7 @@ public class CTFGameManager : NetworkBehaviour {
     public static int powerUpCount = 0;
 
     bool canSpawnPowerUp = true;
-
+    [SyncVar]
     float spawnTimer = 3.0f;
 
     public Text timeText;
