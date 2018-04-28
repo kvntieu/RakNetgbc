@@ -450,7 +450,7 @@ MonoBehaviour:
     i14: 0
     i15: 0
   m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &384887486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -466,6 +466,8 @@ MonoBehaviour:
   timeText: {fileID: 2128614544}
   inLeadText: {fileID: 900714728}
   m_flag: {fileID: 1162810246722884, guid: 30bfd1cf05496124895275be0b446a61, type: 2}
+  powerUpPrefab: {fileID: 1655172470618516, guid: 8faae565e0070974b89ac7cf1357aa44,
+    type: 2}
 --- !u!4 &384887487
 Transform:
   m_ObjectHideFlags: 0
@@ -576,7 +578,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -557.8, y: 172}
+  m_AnchoredPosition: {x: -287.6, y: 172}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &900714728
@@ -740,6 +742,7 @@ MonoBehaviour:
   m_OnlineScene: 
   m_SpawnPrefabs:
   - {fileID: 1162810246722884, guid: 30bfd1cf05496124895275be0b446a61, type: 2}
+  - {fileID: 1655172470618516, guid: 8faae565e0070974b89ac7cf1357aa44, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:

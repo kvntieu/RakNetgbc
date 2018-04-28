@@ -11,16 +11,17 @@ public class CTFGameManager : NetworkBehaviour {
     float m_gameTime = 60.0f; // seconds
     [SyncVar]
     string inLead = "placeholder";
-    [SyncVar]
-    int hostScore = 0;
-    [SyncVar]
-    int clientScore = 0;
+
+    public static int powerUpCount = 0;
+
+    bool canSpawnPowerUp = true;
+
+    float spawnTimer = 3.0f;
 
     public Text timeText;
     public Text inLeadText;
-    public static string localLead;
-    public static int localScore;
     public GameObject m_flag = null;
+    public GameObject powerUpPrefab = null;
     bool gameStarted = false;
     public enum CTF_GameState
     {
@@ -36,7 +37,7 @@ public class CTFGameManager : NetworkBehaviour {
     public bool SpawnFlag()
     {
     
-        GameObject flag = Instantiate(m_flag, new Vector3(Random.Range(-40.0f, 40.0f), 0, Random.Range(-40.0f, 40.0f)), new Quaternion());
+        GameObject flag = Instantiate(m_flag, new Vector3(Random.Range(-40.0f, 40.0f), 2.0f, Random.Range(-40.0f, 40.0f)), new Quaternion());
         NetworkServer.Spawn(flag);
         return true;
     }
@@ -56,7 +57,6 @@ public class CTFGameManager : NetworkBehaviour {
     {
 	    if(isServer)
         {
-            inLeadText.text = "HOST";
             if (m_gameState == CTF_GameState.GS_WaitingForPlayers && IsNumPlayersReached())
             {
                 m_gameState = CTF_GameState.GS_Ready;
@@ -64,22 +64,22 @@ public class CTFGameManager : NetworkBehaviour {
             if (m_gameState == CTF_GameState.GS_InGame)
             {
                 m_gameTime -= Time.deltaTime;
-               
-                //Check who is winning
+                spawnTimer -= Time.deltaTime;
                 
                 if (m_gameTime <= 0.0f)
                 {
                     m_gameState = CTF_GameState.GS_GameOver;
                 }
+                if (spawnTimer <= 0.0f)
+                {
+                    SpawnPowerUp();
+                    spawnTimer = 3f;
+                }
+
             }
             
         }
-
-        if (isClient) {
-            inLeadText.text = "CLIENT";
-        }
         timeText.text = m_gameTime.ToString("F0");
-        //inLeadText.text = inLead;
         UpdateGameState();
 	}
 
@@ -106,5 +106,14 @@ public class CTFGameManager : NetworkBehaviour {
 
     }
 
+    void SpawnPowerUp() {
+        if (powerUpCount < 2)
+        {
+            Vector3 randomPoint = new Vector3(Random.Range(-40.0f, 40.0f), 0, Random.Range(-40.0f, 40.0f));
+            GameObject powerUp = Instantiate(powerUpPrefab, randomPoint, new Quaternion());
+            NetworkServer.Spawn(powerUp);
+            powerUpCount++;
+        }        
+    }
     
 }

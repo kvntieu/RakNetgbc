@@ -13,7 +13,7 @@ public class PowerUp : NetworkBehaviour {
     [ClientRpc]
     public void RpcPickupPower (GameObject player)
     {
-        //AttachFlagToGameObject(player);
+      
     }
 
     /*public void AttachFlagToGameObject(GameObject obj)
@@ -24,14 +24,29 @@ public class PowerUp : NetworkBehaviour {
     }*/
     void OnTriggerEnter(Collider other)
     {
+    
         if (other.tag == "Player")
         {
+           
+            
+            
             if (other.transform.GetComponent<PlayerController>().hasFlag)
             {
+                //spawn shield
+                other.transform.GetComponent<PlayerController>().CmdEnableShield();
+                other.transform.GetComponent<PlayerController>().powerType = "flag";
                 Debug.Log("HAS FLAG");
             }
             else
+            {
+                other.transform.GetComponent<PlayerController>().m_linearSpeed = 20.0f;
+                other.transform.GetComponent<PlayerController>().powerType = "noFlag";
                 Debug.Log("NO FLAG");
+            }
+            other.transform.GetComponent<PlayerController>().isPoweredUp = true;
+            Destroy(gameObject);
+            CTFGameManager.powerUpCount--;
+
         }
 
 

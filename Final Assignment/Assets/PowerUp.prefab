@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 33821698940258650}
   - component: {fileID: 135359529524503512}
   - component: {fileID: 23401003685796034}
+  - component: {fileID: 114962429942682022}
+  - component: {fileID: 114678420771266506}
   m_Layer: 0
   m_Name: PowerUp
   m_TagString: Untagged
@@ -83,6 +85,49 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1655172470618516}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114678420771266506
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1655172470618516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a6017eb25c1e2741ba1b564fa8f72b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114962429942682022
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1655172470618516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 143
+    i1: 170
+    i2: 229
+    i3: 101
+    i4: 224
+    i5: 7
+    i6: 9
+    i7: 116
+    i8: 184
+    i9: 154
+    i10: 199
+    i11: 207
+    i12: 19
+    i13: 87
+    i14: 170
+    i15: 68
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!135 &135359529524503512
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -90,7 +135,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1655172470618516}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5

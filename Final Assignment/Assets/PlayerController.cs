@@ -14,10 +14,14 @@ public class PlayerController : NetworkBehaviour
     public float m_linearSpeed = 5.0f;
     public float m_angularSpeed = 3.0f;
 	public float m_jumpSpeed = 5.0f;
+    public bool isPoweredUp = false;
     public bool hasFlag = false;
     int score = 0;
-    float timeToAddScore = 3.0f;// will add score every 3 seconds
+    float timeToAddScore = 1.0f;// will add score every second
     float scoreTimer;
+    float powerTimer = 5.0f;
+    public string powerType;
+    GameObject shield;
     private Rigidbody m_rb = null;
 
     bool IsHost()
@@ -28,6 +32,8 @@ public class PlayerController : NetworkBehaviour
     // Use this for initialization
     void Start () {
         m_rb = GetComponent<Rigidbody>();
+        shield = transform.Find("Shield").gameObject;
+        shield.SetActive(false);
         //Debug.Log("Start()");
         Vector3 spawnPoint;
         ObjectSpawner.RandomPoint(this.transform.position, 10.0f, out spawnPoint);
@@ -83,6 +89,41 @@ public class PlayerController : NetworkBehaviour
         Jump();
         RpcJump();
     }
+    
+    //Enable Shield
+    public void EnableShield() {
+        shield.SetActive(true);
+    }
+
+    [ClientRpc]
+    public void RpcEnableShield() {
+        EnableShield();
+    }
+
+    [Command]
+    public void CmdEnableShield() {
+        EnableShield();
+        RpcEnableShield();
+    }
+
+    //Disable Shield
+    public void DisableShield()
+    {
+        shield.SetActive(false);
+    }
+
+    [ClientRpc]
+    public void RpcDisableShield()
+    {
+        DisableShield();
+    }
+
+    [Command]
+    public void CmdDisableShield()
+    {
+        DisableShield();
+        RpcDisableShield();
+    }
 
     // Update is called once per frame
     void Update () {
@@ -97,12 +138,28 @@ public class PlayerController : NetworkBehaviour
             if (scoreTimer <= 0)
             {
                 score += 100;
-                CTFGameManager.localScore = score;
-                Debug.Log(CTFGameManager.localScore);
+
+
                 scoreTimer = timeToAddScore;
             }
         }
-
+        if (isPoweredUp) {
+            powerTimer -= Time.deltaTime;
+            if (powerTimer < 0)
+            {
+                isPoweredUp = false;
+                powerTimer = 5.0f;
+                if (powerType == "flag")
+                {
+                    CmdDisableShield();
+                }
+                else
+                {
+                    m_linearSpeed = 5.0f;
+                }
+                powerType = null;
+            }
+        }
 		if (m_rb.velocity.y < Mathf.Epsilon) {
 			TrailRenderer tr = GetComponent<TrailRenderer>();
 			tr.enabled = false;
