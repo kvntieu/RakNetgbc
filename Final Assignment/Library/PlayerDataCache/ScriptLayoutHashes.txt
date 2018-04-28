@@ -146,3 +146,4 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 1196ef1d965309ccf53863c9328f080d Assembly-CSharp.dll:.ObjectSpawner
 b4b3137fe03cac037c6999bbb7cafb96 Assembly-CSharp.dll:.CTFGameManager
 1df234784afa2cbe0613283a35c66908 Assembly-CSharp.dll:.CTFNetworkManager
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Grab

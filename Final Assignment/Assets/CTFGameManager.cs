@@ -12,6 +12,11 @@ public class CTFGameManager : NetworkBehaviour {
     [SyncVar]
     string inLead = "placeholder";
 
+    public static bool flagPossessed = false;
+
+    [SyncVar]
+    float longestFlagTime = 0.0f;
+
     public static int powerUpCount = 0;
 
     bool canSpawnPowerUp = true;
@@ -22,7 +27,9 @@ public class CTFGameManager : NetworkBehaviour {
     public Text inLeadText;
     public GameObject m_flag = null;
     public GameObject powerUpPrefab = null;
+    GameObject flag = null;
     bool gameStarted = false;
+    public static bool isGameOver = false;
     public enum CTF_GameState
     {
         GS_WaitingForPlayers,
@@ -37,7 +44,7 @@ public class CTFGameManager : NetworkBehaviour {
     public bool SpawnFlag()
     {
     
-        GameObject flag = Instantiate(m_flag, new Vector3(Random.Range(-40.0f, 40.0f), 2.0f, Random.Range(-40.0f, 40.0f)), new Quaternion());
+        flag = Instantiate(m_flag, new Vector3(Random.Range(-40.0f, 40.0f), 3.0f, Random.Range(-40.0f, 40.0f)), new Quaternion());
         NetworkServer.Spawn(flag);
         return true;
     }
@@ -55,15 +62,20 @@ public class CTFGameManager : NetworkBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+
 	    if(isServer)
         {
             if (m_gameState == CTF_GameState.GS_WaitingForPlayers && IsNumPlayersReached())
             {
                 m_gameState = CTF_GameState.GS_Ready;
+
             }
             if (m_gameState == CTF_GameState.GS_InGame)
             {
                 m_gameTime -= Time.deltaTime;
+                if (flag == null) {
+                    SpawnFlag();
+                }
                 spawnTimer -= Time.deltaTime;
                 
                 if (m_gameTime <= 0.0f)
@@ -74,6 +86,9 @@ public class CTFGameManager : NetworkBehaviour {
                 {
                     SpawnPowerUp();
                     spawnTimer = 3f;
+                }
+                if (flagPossessed) {
+                    longestFlagTime += Time.deltaTime;
                 }
 
             }
@@ -94,16 +109,15 @@ public class CTFGameManager : NetworkBehaviour {
                 //change state to ingame
                 m_gameState = CTF_GameState.GS_InGame;
             }
+          
         }
         if (m_gameState == CTF_GameState.GS_GameOver)
         {
             timeText.text = "GAME OVER";
+            inLeadText.text = "Total Flag Time: " + longestFlagTime;
+            isGameOver = true;
         }
         
-    }
-
-    public void GameOver() {
-
     }
 
     void SpawnPowerUp() {

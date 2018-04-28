@@ -11,44 +11,41 @@ public class PowerUp : NetworkBehaviour {
 	}
 	
     [ClientRpc]
-    public void RpcPickupPower (GameObject player)
+    public void RpcPickupPower()
     {
-      
+        Destroy(gameObject);
+    }
+    [Command]
+    public void CmdRpcPickupPower()
+    {
+        Destroy(gameObject);
+        RpcPickupPower();
     }
 
-    /*public void AttachFlagToGameObject(GameObject obj)
-    {
-        obj.GetComponent
-        glowObj.GetComponent<Renderer>().enabled = false;
+    void OnTriggerEnter(Collider other) {
 
-    }*/
-    void OnTriggerEnter(Collider other)
-    {
-    
         if (other.tag == "Player")
         {
-           
-            
-            
+            CTFGameManager.powerUpCount--;
+            CmdRpcPickupPower();
+            other.transform.GetComponent<PlayerController>().isPoweredUp = true;
             if (other.transform.GetComponent<PlayerController>().hasFlag)
             {
                 //spawn shield
                 other.transform.GetComponent<PlayerController>().CmdEnableShield();
                 other.transform.GetComponent<PlayerController>().powerType = "flag";
                 Debug.Log("HAS FLAG");
+                Debug.Log(other.transform.GetComponent<PlayerController>().powerType);
             }
             else
             {
                 other.transform.GetComponent<PlayerController>().m_linearSpeed = 20.0f;
                 other.transform.GetComponent<PlayerController>().powerType = "noFlag";
                 Debug.Log("NO FLAG");
+                Debug.Log(other.transform.GetComponent<PlayerController>().powerType);
             }
-            other.transform.GetComponent<PlayerController>().isPoweredUp = true;
-            Destroy(gameObject);
-            CTFGameManager.powerUpCount--;
-
+            
         }
-
 
     }
 }

@@ -289,6 +289,7 @@
     <Compile Include="Assets\CTFNetworkManager.cs" />
     <Compile Include="Assets\CustomNetworkTransformUpdate.cs" />
     <Compile Include="Assets\Flag.cs" />
+    <Compile Include="Assets\Grab.cs" />
     <Compile Include="Assets\ObjectSpawner.cs" />
     <Compile Include="Assets\PlayerController.cs" />
     <Compile Include="Assets\PowerUp.cs" />

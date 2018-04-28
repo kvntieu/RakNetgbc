@@ -36,10 +36,18 @@ public class Flag : NetworkBehaviour {
     public void AttachFlagToGameObject(GameObject obj)
     {
         this.transform.parent = obj.transform;
-        //glowObj.GetComponent<Renderer>().enabled = false;
         emitter.Stop();
-        obj.GetComponent<PlayerController>().hasFlag = true;
-   
+    }
+
+    [ClientRpc]
+    public void RpcDestoryFlag() {
+        Destroy(gameObject);
+    }
+
+    [Command]
+    public void CmdDestroyFlag() {
+        Destroy(gameObject);
+        RpcDestoryFlag();
     }
 
     void OnTriggerEnter(Collider other)
@@ -48,10 +56,12 @@ public class Flag : NetworkBehaviour {
         {
             return;
         }
-
+    
         m_state = State.Possessed;
+        CTFGameManager.flagPossessed = true;
         AttachFlagToGameObject(other.gameObject);
         RpcPickUpFlag(other.gameObject);
+        other.transform.GetComponent<PlayerController>().CmdSetFlag(true);
     }
 
     // Update is called once per frame

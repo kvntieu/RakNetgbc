@@ -23,7 +23,7 @@ public class PlayerController : NetworkBehaviour
     public string powerType;
     GameObject shield;
     private Rigidbody m_rb = null;
-
+    
     bool IsHost()
     {
         return isServer && isLocalPlayer;
@@ -34,6 +34,7 @@ public class PlayerController : NetworkBehaviour
         m_rb = GetComponent<Rigidbody>();
         shield = transform.Find("Shield").gameObject;
         shield.SetActive(false);
+        hasFlag = false;
         //Debug.Log("Start()");
         Vector3 spawnPoint;
         ObjectSpawner.RandomPoint(this.transform.position, 10.0f, out spawnPoint);
@@ -61,6 +62,7 @@ public class PlayerController : NetworkBehaviour
         base.OnStartLocalPlayer();
         //Debug.Log("OnStartLocalPlayer()");
         GetComponent<MeshRenderer>().material.color = new Color(0.0f, 1.0f, 0.0f);
+        transform.Find("GrabRange").GetComponent<MeshRenderer>().material.color = new Color(0.0f, 0.5f, 0.8f);
     }
 
     public override void OnStartServer()
@@ -125,23 +127,25 @@ public class PlayerController : NetworkBehaviour
         RpcDisableShield();
     }
 
+    public void SetFlag(bool isFlagged) {
+        hasFlag = isFlagged;
+    }
+
+    [ClientRpc]
+    public void RpcSetFlag(bool isFlagged) {
+        SetFlag(isFlagged);
+    }
+    [Command]
+    public void CmdSetFlag(bool isFlagged) {
+        SetFlag(isFlagged);
+        RpcSetFlag(isFlagged);
+    }
     // Update is called once per frame
     void Update () {
 
         if(!isLocalPlayer)
         {
             return;
-        }
-
-        if (hasFlag) {
-            scoreTimer -= Time.deltaTime;
-            if (scoreTimer <= 0)
-            {
-                score += 100;
-
-
-                scoreTimer = timeToAddScore;
-            }
         }
         if (isPoweredUp) {
             powerTimer -= Time.deltaTime;
@@ -153,7 +157,7 @@ public class PlayerController : NetworkBehaviour
                 {
                     CmdDisableShield();
                 }
-                else
+                else if (powerType == "noFlag")
                 {
                     m_linearSpeed = 5.0f;
                 }
@@ -165,24 +169,27 @@ public class PlayerController : NetworkBehaviour
 			tr.enabled = false;
 		}
 
-        float rotationInput = Input.GetAxis("Horizontal");
-        float forwardInput = Input.GetAxis("Vertical");
-
-        Vector3 linearVelocity = this.transform.forward * (forwardInput * m_linearSpeed);
-
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (!CTFGameManager.isGameOver)
         {
-            CmdJump();
+            float rotationInput = Input.GetAxis("Horizontal");
+            float forwardInput = Input.GetAxis("Vertical");
+
+            Vector3 linearVelocity = this.transform.forward * (forwardInput * m_linearSpeed);
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                CmdJump();
+            }
+
+            float yVelocity = m_rb.velocity.y;
+
+
+            linearVelocity.y = yVelocity;
+            m_rb.velocity = linearVelocity;
+
+            Vector3 angularVelocity = this.transform.up * (rotationInput * m_angularSpeed);
+            m_rb.angularVelocity = angularVelocity;
         }
-
-        float yVelocity = m_rb.velocity.y;
-
-
-        linearVelocity.y = yVelocity;
-        m_rb.velocity = linearVelocity;
-
-        Vector3 angularVelocity = this.transform.up * (rotationInput * m_angularSpeed);
-        m_rb.angularVelocity = angularVelocity;
     }
    
 }
